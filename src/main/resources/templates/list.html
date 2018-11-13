@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org" xmlns:sec="http://www.www.thymeleaf.org/extras/spring-security">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<div th:replace="base :: nav"></div>
+<div class="space"></div>
+<div class="jumbotron text-center">
+    <h1>Help Find our Lost Furry Friends &#9785;</h1>
+</div>
+<span class="container bg-light"></span>
+
+    <h2>Fido is Missing!</h2>
+    <!--<h2>Insecure page</h2>-->
+
+<div sec:authorize="!isAuthenticated()">
+    <a href="/login"> Login</a><br />
+</div>
+<div sec:authorize="isAuthenticated()">
+    <a href="/add"> Add pet</a><br />
+</div>
+<div class="col-sm-3">
+    <div class="card text-center">
+        <div class="card-header text-center">
+
+            <div th:each="lostPet: ${pets}">
+                <strong><div><a th:text="${lostPet.name}"></a></div></strong>
+                <div><a th:text="${lostPet.date}"></a></div>
+                <span th:if="${user_id == lostPet.user.id}">
+                <a th:href="@{/update/{id}(id=${lostPet.id})}">Update</a>
+                <a th:href="@{/detail/{id}(id=${lostPet.id})}">Detail</a>
+            </span>
+                <div class="card-body">
+                    <div>
+                        <!--<img class="card-img-top user-img" src="http://res.cloudinary.com/dxs9ed6s7/image/upload/v1542089460/eefnfduivu7zipe56xtt.jpg" alt="pet">-->
+                    </div>
+                    <div><a th:text="${lostPet.status}"></a></div>
+                    <strong> Description: <span><a th:text="${lostPet.description}"></a></span></strong>
+
+                </div>
+            </div>
+        </div>
+</div><!--end div class col-->
+
+<!--<table class="table">-->
+    <!--<tr>-->
+        <!--<th>Name &nbsp; </th>-->
+        <!--<th>Date &nbsp; </th>-->
+        <!--<th>Status &nbsp; </th>-->
+        <!--<td> description&nbsp;</td>-->
+
+    <!--</tr>-->
+    <!--<tr th:each="course: ${courses}">-->
+        <!--<td th:text="${course.title}"></td>-->
+        <!--<td th:text="${course.instructor}"></td>-->
+        <!--<td th:text="${course.credit}"></td>-->
+        <!--<td>-->
+            <div sec:authorize="hasAuthority('ADMIN')">
+                   <!--&lt;!&ndash;<span th:if="${user_id !=null}">&ndash;&gt;-->
+                <!--&lt;!&ndash;<a th:href="@{/update/{id}(id=${message.id})}">Update</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                <!--<span th:if="${user_id == pet.user.id}">-->
+                <!--<a th:href="@{/update/{id}(id=${pet.id})}">Update</a>-->
+                <!--<a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>-->
+                <!--</span>-->
+                <!--&lt;!&ndash;<a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>- &ndash;&gt;-->
+                <!--&lt;!&ndash;<a th:href="@{/detail/{id}(id=${course.id})}">Detail</a>&ndash;&gt;-->
+            </div>
+
+            <!--&lt;!&ndash;<div sec:authorize="!isAuthenticated()">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href="/update">Update</a></div><br />&ndash;&gt;-->
+            <!--<span th:if="${user_id == pet.user.id}">-->
+                <!--<a th:href="@{/update/{id}(id=${pet.id})}">Update</a>-->
+                <!--<a th:href="@{/detail/{id}(id=${pet.id})}">Detail</a>-->
+            <!--</span>-->
+    <!--&lt;!&ndash;<div sec:authorize="hasAuthority('USER')">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>- &ndash;&gt;-->
+        <!--</td></tr>-->
+<!--</table>-->
+    <!--<h2>Insecure page</h2>-->
+<button class="btn btn-success" sec:authorize="isAuthenticated()">
+    <!--<a href="/add"> Add a course</a><br />-->
+    <a href="/logout" class="text-danger"> Logout</a><br />
+</button>
+<button class="text-light bg-dark" sec:authorize="isAuthenticated()">
+    <!--<a href="/add"> Add a course</a><br />-->
+    <a href="/register" class="text-light"> Register</a><br />
+</button>
+
+    <div class="space"></div>
+
+    </div>
+
+    <footer th:replace="base :: footer"></footer>
+</body>
+</html>
